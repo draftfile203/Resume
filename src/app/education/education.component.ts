@@ -1,6 +1,9 @@
 import { NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import gsap from 'gsap';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+
 
 @Component({
   selector: 'app-education',
@@ -42,15 +45,19 @@ export class EducationComponent  implements AfterViewInit{
   @ViewChild('glitchText') glitchText!: ElementRef;
   @ViewChild('educationIntro') educationIntro!: ElementRef;
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
 showEducationIntro = true;
 showEducationSection = false;
 
 ngAfterViewInit(): void {
-  setTimeout(() => {
-    this.animateEducationWord();
-  }, 0);
+  if (isPlatformBrowser(this.platformId)) {
+    setTimeout(() => {
+      this.animateEducationWord();
+    }, 0);
+  }
 }
+
 
   animateEducationWord() {
     const el = this.glitchText.nativeElement;

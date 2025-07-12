@@ -28,10 +28,13 @@ export class ExperienceComponent implements OnInit,AfterViewInit{
 ngOnInit(): void {
   this.generateGrid();
 
+  if (isPlatformBrowser(this.platformId)) {
   window.addEventListener('resize', () => {
     this.words = [];
     this.generateGrid();
   });
+}
+
 }
 
 
@@ -86,7 +89,9 @@ ngAfterViewInit() {
 
 
 generateGrid() {
-  const screenWidth = window.innerWidth;
+    if (!isPlatformBrowser(this.platformId)) return;
+
+  const screenWidth = window.innerWidth
 
   const centerTop = 50;
   const centerLeft = 50;

@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { text } from 'stream/consumers';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-projects',
@@ -37,22 +39,25 @@ bouncingOut = false;
     return this.projects[this.previousIndex];
   }
 
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
 ngOnInit(): void {
-  // Bounce out whole title after 3 seconds (letters slide in with stagger)
-  setTimeout(() => {
-    this.bouncingOut = true;
-  }, 1000);
+  if (isPlatformBrowser(this.platformId)) {
+    // Bounce out whole title after 3 seconds (letters slide in with stagger)
+    setTimeout(() => {
+      this.bouncingOut = true;
+    }, 1000);
 
-  // Show carousel only after bounce out finishes + small buffer
-  setTimeout(() => {
-    this.showContent = true;
-    this.firstLoad = true;
+    // Show carousel only after bounce out finishes + small buffer
+    setTimeout(() => {
+      this.showContent = true;
+      this.firstLoad = true;
 
-    setTimeout(() => this.firstLoad = false, 1000);
-    this.startAutoScroll();
-  }, 1800); // 3000 + 800ms bounce out
+      setTimeout(() => this.firstLoad = false, 1000);
+      this.startAutoScroll();
+    }, 1800); // 3000 + 800ms bounce out
+  }
 }
-
 
 
   ngOnDestroy(): void {
