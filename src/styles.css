@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  font-family: 'Montserrat', sans-serif;
+
+}
+
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* body {
+     /* background-image: url('assets/background.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+} */

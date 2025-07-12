@@ -1,0 +1,248 @@
+section{
+    display: flex;
+    flex-direction: column;
+    min-height: 80vh;
+    align-items: center;
+    justify-content: center;  
+}
+
+.title-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+.project-title {
+  display: inline-block;
+  font-size: 4rem;
+  font-weight: bold;
+  color: white;
+  /* no animation initially */
+}
+
+/* Letters slide in individually */
+.letter {
+  display: inline-block;
+  opacity: 0;
+  animation: slideInBounce 1s forwards;
+}
+
+/* Bounce out the whole title (h1) together */
+.project-title.bounce-out {
+  animation: bounceOut 0.8s forwards;
+  animation-fill-mode: forwards;
+  animation-delay: 0s !important; /* cancel letter delays */
+}
+
+/* Slide in keyframe for letters */
+@keyframes slideInBounce {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Bounce out keyframe for whole title */
+@keyframes bounceOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  30% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.carousel {
+  width: 80vw;
+  height: 84vh;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+.project-link.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-card.show {
+  transform: scale(1);
+  opacity: 1;
+}
+
+
+.carousel a {
+    color: gray;
+    text-decoration: none;
+    font-size: 24px;
+}
+
+.carousel a:hover {
+    color: white;
+    transition: 0.5s;
+}
+
+
+
+
+.project-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.main-image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+  top: 0;
+  left: 0;
+  transition: transform 0.6s ease;
+}
+
+.previous {
+  z-index: 1;
+  transform: translateX(0);
+}
+
+.current.entering {
+  z-index: 2;
+  transform: translateX(100%);
+  animation: slideIn 0.6s forwards ease;
+}
+
+
+.nav-button {
+  background: none;
+  border: none;
+  font-size: 40px;
+  cursor: pointer;
+  color: #333;
+  transition: transform 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    transform: scale(1.2);
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background-color: white;
+  width: 0%;
+  transition: none;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.progress-bar.animate {
+  animation: progressFill 5s linear forwards;
+}
+
+@keyframes progressFill {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+/* Default: no animation or hidden states */
+.project-link {
+  opacity: 1;
+  transform: translateY(0);
+  transition: none;
+}
+
+.project-card {
+  transform: scale(1);
+  opacity: 1;
+  transition: none;
+}
+
+/* First load animation */
+.project-link.slide-in {
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: slideFromTop 0.5s ease forwards;
+}
+
+.project-card.expand {
+  transform: scale(0.7);
+  opacity: 0;
+  animation: expandFromCenter 0.5s ease forwards;
+}
+
+.main-image.fade-first {
+  opacity: 0;
+  transform: scale(0.95);
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Keyframes */
+@keyframes slideFromTop {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes expandFromCenter {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

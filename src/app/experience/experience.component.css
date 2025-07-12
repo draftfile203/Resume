@@ -1,0 +1,272 @@
+section {
+  display: flex;
+  min-height: 80vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-section {
+  position: relative;
+  min-height: 80vh;
+  width: 100%;
+ 
+  overflow: hidden;
+}
+
+.center-word {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  z-index: 10;
+  opacity: 0; /* Start hidden, will fade in via GSAP */
+  white-space: nowrap;
+  text-shadow: 1px 0 red, -1px 0 cyan;
+  animation: glitch 0.4s infinite;
+}
+
+.grid-word {
+  position: absolute;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* Initially hidden */
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(-50%, -50%);
+  }
+  20% {
+    transform: translate(-51%, -49%);
+  }
+  40% {
+    transform: translate(-49%, -51%);
+  }
+  60% {
+    transform: translate(-52%, -48%);
+  }
+  80% {
+    transform: translate(-48%, -52%);
+  }
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+
+
+.works {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px;
+}
+
+
+
+.experience {
+    background-color: black;
+    padding: 40px;
+    max-width: 600px;
+    /* border: 2px solid white; */
+    border-radius: 20px;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  transition: all 0.5s ease;
+  max-height: 130px; /* enough to show h1 and h2 only */
+  cursor: pointer;
+  position: relative;
+  justify-content: center;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.experience:first-child { 
+    border: 2px solid #ff0000;
+}
+
+.experience:nth-child(2) {
+    border: 2px solid #88ff00;
+}
+
+.experience:nth-child(3) {
+    border: 2px solid #008cff;
+}
+
+.experience:last-child {
+    border: 2px solid #f400e0;
+}
+
+/* Slide from left */
+.slide-0 {
+  animation: slideFromLeft 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+/* Slide from top */
+.slide-1 {
+  animation: slideFromTop 1s ease-out forwards;
+  animation-delay: 0.6s;
+}
+
+/* Slide from right */
+.slide-2 {
+     animation: slideFromBottom 1s ease-out forwards;
+  animation-delay: 1s;
+}
+
+/* Slide from bottom */
+.slide-3 {
+ animation: slideFromRight 1s ease-out forwards;
+  animation-delay: 0.9s;
+}
+
+
+
+.experience h1,h2,p {
+    color: white;
+    font-size: 28px;
+}
+
+.experience h2 {
+    color: rgb(180, 173, 173);
+}
+
+.title {
+    display: flex;
+    gap: 10px;
+}
+
+
+.experience p {
+      opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.4s ease, max-height 0.4s ease;
+  margin-top: 10px;
+}
+
+.experience:hover {
+  max-height: 600px; /* enough to show everything */
+  background-color: #1a1a1a; /* optional subtle change */
+}
+
+.experience:hover p {
+  opacity: 1;
+  max-height: 200px;
+}
+
+/* Keyframes */
+@keyframes slideFromLeft {
+  from {
+    left: -100px;
+    opacity: 0;
+  }
+  to {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromTop {
+  from {
+    top: -100px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromRight {
+  from {
+    left: 100px;
+    opacity: 0;
+  }
+  to {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes slideFromBottom {
+  from {
+    top: 100px;
+    opacity: 0;
+  }
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@media (max-width:1680px) {
+  .grid-word {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width:1350px) {
+  .grid-word {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .grid-word {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width:1000px) {
+  .works {
+    grid-template-columns: 1fr;
+  }
+   .slide-0 {
+    animation: slideFromLeft 0.8s ease-out forwards;
+    animation-delay: 0.2s;
+  }
+
+  .slide-1 {
+    animation: slideFromRight 0.8s ease-out forwards;
+    animation-delay: 0.5s;
+  }
+
+  .slide-2 {
+    animation: slideFromLeft 0.8s ease-out forwards;
+    animation-delay: 0.8s;
+  }
+
+  .slide-3 {
+    animation: slideFromRight 0.8s ease-out forwards;
+    animation-delay: 1.1s;
+  }
+}
+
+
+@media (max-width: 480px) {
+ .experience {
+  max-height: 180px;
+ }
+    .title span {
+   padding: 10px;
+   margin-top: 4px;
+  }
+  
+   .title {
+    margin-top: 10px;
+   }
+ 
+   .experience:hover {
+    max-height: 800px;
+   }
+}

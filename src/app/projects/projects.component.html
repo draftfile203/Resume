@@ -1,0 +1,51 @@
+<section>
+<div class="title-screen" *ngIf="!showContent">
+  <h1 
+    class="project-title"
+    [class.bounce-out]="bouncingOut"
+  >
+    <span *ngFor="let letter of titleLetters; let i = index" class="letter" [style.animation-delay]="i * 0.1 + 's'">
+      {{letter}}
+    </span>
+  </h1>
+</div>
+
+
+
+<!-- Carousel + Link -->
+<div *ngIf="showContent" class="carousel-wrapper">
+  <button class="nav-button left" (click)="prevProject()" [disabled]="transitioning">&#10094;</button>
+
+  <div class="carousel">
+    <a
+      class="project-link"
+      [href]="'https://' + currentProject.link"
+      target="_blank"
+      rel="noopener noreferrer"
+      [class.slide-in]="firstLoad"
+    >
+      Click Here To See Website
+    </a>
+
+    <div class="project-card" [class.expand]="firstLoad">
+      <img
+        class="main-image previous"
+        *ngIf="transitioning"
+        [src]="previousProject.photo1"
+        alt="Previous project"
+      />
+      <img
+        class="main-image current"
+        [src]="currentProject.photo1"
+        alt="Current project"
+        [class.fade-first]="firstLoad"
+         [class.entering]="transitioning && !firstLoad"
+      />
+      <div class="progress-bar" [class.animate]="animateProgress"></div>
+    </div>
+  </div>
+
+  <button class="nav-button right" (click)="nextProject()" [disabled]="transitioning">&#10095;</button>
+</div>
+
+</section>

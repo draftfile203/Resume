@@ -1,0 +1,176 @@
+section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  flex-direction: column;
+}
+
+.education-intro {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-height: 80vh;
+  
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.glitch-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 3rem;
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+.places {
+    display: flex;
+    padding: 40px;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+}
+
+.school {
+  padding: 40px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  border-radius: 10px;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  max-height:200px;
+  background-size: 200% 100%;
+  background-position: left center;
+  background-color: rgb(0, 0, 0,0.7);
+  transform: scale(0.8);
+  opacity: 0;
+  animation: scaleIn 0.6s ease forwards;
+  border: 1px solid black;
+}
+
+.school.open {
+  max-height: 600px; 
+}
+
+.school:hover {
+    transform: translateY(-5px);
+    transition: 0.5s;
+    cursor: pointer;
+    background-color: black;
+    border: 1px solid white;
+}
+
+.title, .degree {
+    display: flex;
+    gap: 12px;
+}
+
+.title h1 {
+    font-size: 28px;
+    color: white;
+}
+
+.title svg, .degree svg {
+    max-width: 32px;
+}
+
+.degree h2 {
+    font-size: 20px;
+    color: rgb(170, 166, 166);
+}
+
+.school h3 {
+    color: white;
+}
+.school p {
+  transform-origin: top;
+  transform: scaleY(0);
+  opacity: 0;
+  height: auto;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  color: white;
+  font-size: 20px;
+  pointer-events: none;
+}
+.school.open p {
+  transform: scaleY(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+
+.arrow {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 10px solid rgb(182, 174, 174);
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotated {
+  transform: rotate(180deg);
+}
+
+/* Fade-in animation for the gradient */
+@keyframes fadeGradient {
+  0% {
+    background-position: left center;
+    opacity: 0;
+  }
+  100% {
+    background-position: right center;
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width:1800px) {
+  .places {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .places {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width:500px) {
+  .places {
+    padding: 20px;
+
+  }
+  .school {
+    padding: 20px;
+    width: 340px;
+  }
+}

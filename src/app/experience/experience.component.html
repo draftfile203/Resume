@@ -1,0 +1,35 @@
+<section class="intro-section" *ngIf="!showExperienceSection">
+  <!-- Center word shows only if showCenterWord is true -->
+  <div *ngIf="showCenterWord" class="center-word">EXPERIENCES</div>
+
+  <!-- Grid words start at center (50%, 50%) -->
+  <div
+    class="grid-word"
+    *ngFor="let word of words; let i = index"
+    #wordRef
+    [style.top.%]="50"
+    [style.left.%]="50"
+    [attr.data-index]="i"
+  >
+    EXPERIENCES
+  </div>
+</section>
+
+
+<section *ngIf="showExperienceSection" >
+  <div class="works">
+    <div
+      class="experience"
+      *ngFor="let experience of experiecnces; let i = index"
+      [ngClass]="'slide-' + i"
+    >
+      <div class="title">
+        <span [innerHTML]="experience.icon"></span>
+        <h1>{{ experience.title }}</h1>
+      </div>
+      <h2>{{ experience.date }}</h2>
+      <p>{{ experience.description }}</p>
+    </div>
+  </div>
+</section>
+
