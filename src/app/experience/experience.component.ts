@@ -266,33 +266,18 @@ export class ExperienceComponent implements OnInit,AfterViewInit{
       delay += fadeDuration + 0.1;
     });
 
-gsap.delayedCall(delay, () => {
-  this.showExperienceSection = true;
+    gsap.delayedCall(delay, () => {
+      this.showExperienceSection = true;
 
-  setTimeout(() => {
-    // Restart fade-in of whole section
-    gsap.from('.works', {
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      ease: 'power2.out',
+      setTimeout(() => {
+        gsap.from('.works', {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          ease: 'power2.out',
+        });
+      }, 0);
     });
-
-    // 🔧 Fix: Force re-apply animation classes
-    const experiences = document.querySelectorAll('.experience');
-    experiences.forEach((el, index) => {
-      // Remove old animation classes
-      el.classList.remove('slide-0', 'slide-1', 'slide-2', 'slide-3');
-
-      // Force reflow to restart animation
-      void (el as HTMLElement).offsetWidth;
-
-      // Add the correct animation class back
-      el.classList.add('slide-' + index);
-    });
-  }, 0);
-});
-
   }
 
 }
