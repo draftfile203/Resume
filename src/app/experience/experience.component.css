@@ -269,4 +269,8 @@ section {
    .experience:hover {
     max-height: 800px;
    }
+    .works {
+    max-height: 80vh;
+    overflow-y: auto;
+  }
 }

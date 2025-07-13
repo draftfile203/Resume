@@ -11,7 +11,8 @@ import gsap from 'gsap';
   styleUrl: './experience.component.css',
 })
 export class ExperienceComponent implements OnInit,AfterViewInit{
-  experiecnces: {
+ 
+   experiecnces: {
     icon?: SafeHtml;
     title: string;
     date: string;
@@ -22,196 +23,7 @@ export class ExperienceComponent implements OnInit,AfterViewInit{
   showCenterWord = true;
   showExperienceSection = false;
 
-
   @ViewChildren('wordRef') wordElements!: QueryList<ElementRef>;
-
-ngOnInit(): void {
-  this.generateGrid();
-
-  if (isPlatformBrowser(this.platformId)) {
-  window.addEventListener('resize', () => {
-    this.words = [];
-    this.generateGrid();
-  });
-}
-
-}
-
-
-
-
-ngAfterViewInit() {
-  if (!this.wordElements || this.wordElements.length === 0) return;
-
-  // Glitch-like flicker for center word lasting about 1.5 seconds total (instead of ~0.5s)
-  gsap.fromTo(
-    '.center-word',
-    { opacity: 0 },
-    {
-      opacity: 1,
-      duration: 0.1,
-      repeat: 9,    // ~ 1.5 seconds / 0.1*2 per repeat) repeats for ~1.4s flicker
-      yoyo: true,
-      onComplete: () => {
-        // Fade out immediately after glitch stops (no delay)
-        gsap.to('.center-word', {
-          opacity: 0,
-          duration: 0.2, // a bit faster fade out
-          onComplete: () => {
-            this.showCenterWord = false;
-
-            // Animate all words from center outward immediately
-            this.wordElements.forEach((el, index) => {
-              const word = this.words[index];
-              gsap.to(el.nativeElement, {
-                top: word.top + '%',
-                left: word.left + '%',
-                opacity: 1,
-                delay: 0,        // start instantly after fade out
-                duration: 1,
-                ease: 'power2.out',
-                onComplete: () => {
-                  if (index === this.words.length - 1) {
-                    gsap.delayedCall(0.2, () => {
-                      this.fadeOutWordsInGroups();
-                    });
-                  }
-                }
-              });
-            });
-          }
-        });
-      }
-    }
-  );
-}
-
-
-
-generateGrid() {
-    if (!isPlatformBrowser(this.platformId)) return;
-
-  const screenWidth = window.innerWidth
-
-  const centerTop = 50;
-  const centerLeft = 50;
-
-  let rowSpacing: number;
-  let colSpacing: number;
-  let totalRows: number;
-  let itemsPerRow: number;
-
-  // Mobile: under 500px — 2x5 grid
-  if (screenWidth < 500) {
-    rowSpacing = 13;
-    colSpacing = 30;
-    totalRows = 5;
-    itemsPerRow = 2;
-  }
-  // Small tablets/large phones: under 901px — 3x5 grid
-  else if (screenWidth < 901) {
-    rowSpacing = 12;
-    colSpacing = 24;
-    totalRows = 5;
-    itemsPerRow = 3;
-  }
-  // Tablets
-  else if (screenWidth < 1100) {
-    rowSpacing = 10;
-    colSpacing = 19;
-    totalRows = 5;
-    itemsPerRow = 4;
-  }
-  // Desktops
-  else {
-    rowSpacing = 9;
-    colSpacing = 14;
-    totalRows = 7;
-    itemsPerRow = 5;
-  }
-
-  this.words = []; // clear previous words
-
-  for (let r = 0; r < totalRows; r++) {
-    const offset = r - Math.floor(totalRows / 2);
-    const top = centerTop + offset * rowSpacing;
-    const stagger = r % 2 !== 0;
-
-    for (let c = 0; c < itemsPerRow; c++) {
-      let left = centerLeft + (c - (itemsPerRow - 1) / 2) * colSpacing;
-
-      if (stagger) left += colSpacing / 2;
-
-    
-
-      this.words.push({ top, left });
-    }
-  }
-}
-
-
-fadeOutWordsInGroups() {
-  const wordsArray = this.wordElements.toArray();
-  const totalWords = wordsArray.length;
-
-  const indices = Array.from({ length: totalWords }, (_, i) => i);
-
-  function shuffle(array: number[]) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  }
-
-  shuffle(indices);
-
-  const chunks: number[][] = [];
-  let i = 0;
-  while (i < totalWords) {
-    const size = Math.floor(Math.random() * 2) + 5; // 3 or 4
-    chunks.push(indices.slice(i, i + size));
-    i += size;
-  }
-
-  let delay = 0;
-  const fadeDuration = 0.3;
-
-  chunks.forEach(chunk => {
-    // Filter out any undefined elements (shouldn't happen but just in case)
-    const validElements = chunk
-      .map(idx => wordsArray[idx])
-      .filter(el => el && el.nativeElement)
-      .map(el => el.nativeElement);
-
-    if (validElements.length === 0) {
-      console.warn('No valid elements in this chunk', chunk);
-      return;
-    }
-
-    gsap.to(validElements, {
-      opacity: 0,
-      duration: fadeDuration,
-      delay,
-      stagger: 0.1,
-      ease: "power1.inOut"
-    });
-
-    delay += fadeDuration + 0.1;
-  });
-    gsap.delayedCall(delay, () => {
-    this.showExperienceSection = true;
-
-    setTimeout(() => {
-      gsap.from('.works', {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        ease: 'power2.out',
-      });
-    }, 0);
-  });
-}
-
 
   constructor(private sanitizer: DomSanitizer, @Inject(PLATFORM_ID) private platformId: Object) {
     this.experiecnces = [
@@ -288,5 +100,185 @@ fadeOutWordsInGroups() {
       }
     ];
   }
+
+  
+  ngOnInit(): void {
+    // Defer grid generation slightly to ensure dimensions are available
+    setTimeout(() => this.generateGrid(), 0);
+
+    // Handle responsive resizing
+    if (isPlatformBrowser(this.platformId)) {
+      window.addEventListener('resize', () => {
+        this.words = [];
+        this.generateGrid();
+      });
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // Wait for DOM to stabilize
+    setTimeout(() => {
+      if (!this.wordElements || this.wordElements.length === 0) {
+        console.warn('⚠️ wordElements not ready!');
+        return;
+      }
+
+      console.log('✅ wordElements:', this.wordElements.length);
+      this.animateIntro();
+    }, 0);
+  }
+
+  animateIntro() {
+    // Animate glitch and fade-out of center word
+    gsap.fromTo(
+      '.center-word',
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.1,
+        repeat: 9,
+        yoyo: true,
+        onComplete: () => {
+          gsap.to('.center-word', {
+            opacity: 0,
+            duration: 0.2,
+            onComplete: () => {
+              this.showCenterWord = false;
+
+              this.wordElements.forEach((el, index) => {
+                const word = this.words[index];
+                gsap.to(el.nativeElement, {
+                  top: word.top + '%',
+                  left: word.left + '%',
+                  opacity: 1,
+                  delay: 0,
+                  duration: 1,
+                  ease: 'power2.out',
+                  onComplete: () => {
+                    if (index === this.words.length - 1) {
+                      gsap.delayedCall(0.2, () => {
+                        this.fadeOutWordsInGroups();
+                      });
+                    }
+                  },
+                });
+              });
+            },
+          });
+        },
+      }
+    );
+  }
+
+  generateGrid() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const screenWidth = typeof window !== 'undefined' ? window.innerWidth : 1200;
+
+    const centerTop = 50;
+    const centerLeft = 50;
+
+    let rowSpacing: number;
+    let colSpacing: number;
+    let totalRows: number;
+    let itemsPerRow: number;
+
+    if (screenWidth < 500) {
+      rowSpacing = 13;
+      colSpacing = 30;
+      totalRows = 5;
+      itemsPerRow = 2;
+    } else if (screenWidth < 901) {
+      rowSpacing = 12;
+      colSpacing = 24;
+      totalRows = 5;
+      itemsPerRow = 3;
+    } else if (screenWidth < 1100) {
+      rowSpacing = 10;
+      colSpacing = 19;
+      totalRows = 5;
+      itemsPerRow = 4;
+    } else {
+      rowSpacing = 9;
+      colSpacing = 14;
+      totalRows = 7;
+      itemsPerRow = 5;
+    }
+
+    this.words = [];
+
+    for (let r = 0; r < totalRows; r++) {
+      const offset = r - Math.floor(totalRows / 2);
+      const top = centerTop + offset * rowSpacing;
+      const stagger = r % 2 !== 0;
+
+      for (let c = 0; c < itemsPerRow; c++) {
+        let left = centerLeft + (c - (itemsPerRow - 1) / 2) * colSpacing;
+        if (stagger) left += colSpacing / 2;
+
+        this.words.push({ top, left });
+      }
+    }
+  }
+
+  fadeOutWordsInGroups() {
+    const wordsArray = this.wordElements.toArray();
+    const totalWords = wordsArray.length;
+
+    const indices = Array.from({ length: totalWords }, (_, i) => i);
+
+    function shuffle(array: number[]) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    shuffle(indices);
+
+    const chunks: number[][] = [];
+    let i = 0;
+    while (i < totalWords) {
+      const size = Math.floor(Math.random() * 2) + 5; // 5 or 6
+      chunks.push(indices.slice(i, i + size));
+      i += size;
+    }
+
+    let delay = 0;
+    const fadeDuration = 0.3;
+
+    chunks.forEach((chunk) => {
+      const validElements = chunk
+        .map((idx) => wordsArray[idx])
+        .filter((el) => el && el.nativeElement)
+        .map((el) => el.nativeElement);
+
+      if (validElements.length === 0) return;
+
+      gsap.to(validElements, {
+        opacity: 0,
+        duration: fadeDuration,
+        delay,
+        stagger: 0.1,
+        ease: 'power1.inOut',
+      });
+
+      delay += fadeDuration + 0.1;
+    });
+
+    gsap.delayedCall(delay, () => {
+      this.showExperienceSection = true;
+
+      setTimeout(() => {
+        gsap.from('.works', {
+          opacity: 0,
+          y: 50,
+          duration: 1,
+          ease: 'power2.out',
+        });
+      }, 0);
+    });
+  }
+
 }
 
